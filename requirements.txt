@@ -1,0 +1,5 @@
+kaggle
+kagglehub
+numpy
+pandas
+pytorch
