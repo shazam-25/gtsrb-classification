@@ -1,14 +1,14 @@
-# German Traffic Sign Recognition
+# 🚦 German Traffic Sign Recognition
 
 This project implements a deep learning classification pipeline to identify German traffic signs using the GTSRB dataset.
 
-## Project Overview
+## 📋 Project Overview
 * **Task Type:** Multi-class Image Classification
 * **Dataset:** [GTSRB - German Traffic Sign Recognition Benchmark](https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign)
 
 ---
 
-## Project Folder Structure
+## 📂 Project Folder Structure
 
 ```text
 gtsrb-sign-classification/
@@ -38,7 +38,7 @@ gtsrb-sign-classification/
 
 ---
 
-## ML Operation Flowchart
+## ⚙️ ML Operation Flowchart
 
 
 
@@ -52,7 +52,7 @@ The workflow follows a modular approach to ensure scalability and reproducibilit
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 Ensure you have Python 3.8+ installed. Install the necessary dependencies:
