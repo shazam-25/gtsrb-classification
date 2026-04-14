@@ -11,6 +11,7 @@ import seaborn as sns
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
 # -- Prerequisites --
+
 # Make directory to save the reports
 os.makedirs("reports/figures", exist_ok=True)
 
