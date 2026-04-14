@@ -1,5 +1,14 @@
-kaggle
 kagglehub
+opencv-python
 numpy
 pandas
-pytorch
+Pillow
+matplotlib
+seaborn
+scikit-learn
+torch
+torchvision
+torchinfo
+tqdm
+ipywidgets
+IPython

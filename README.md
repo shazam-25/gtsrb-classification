@@ -13,14 +13,20 @@ This project implements a deep learning classification pipeline to identify Germ
 ```text
 gtsrb-sign-classification/
 ├── data/
-│   ├── external/       # Extra sign datasets (optional)
 │   ├── interim/        # Cropped/resized images before final serialization
 │   ├── processed/      # Final tensors or TFRecords ready for training
+│       ├── val_dataloader.pt
+│       ├── train_dataloader.pt
+│       ├── test_dataloader.pt
 │   └── raw/            # The original Kaggle download
 │       ├── Train/
 │       ├── Test/
-│       └── Train.csv
+│       ├── Train.csv
+│       └── Test.csv
 ├── models/             # Saved .pth or .h5 weights and architecture exports
+│   ├── cnn.pth
+│   ├── 
+│   ├── 
 ├── notebooks/          # EDA and experimentation
 │   ├── 01-eda-and-preprocessing.ipynb
 │   └── 02-model-prototyping.ipynb
@@ -29,7 +35,7 @@ gtsrb-sign-classification/
 │   ├── data_loader.py  # Ingestion logic (Dataset/DataLoader classes)
 │   ├── preprocess.py   # Image normalization, CLAHE, and resizing logic
 │   ├── train.py        # Main training loop
-│   └── evaluate.py     # Metrics (Confusion Matrix, F1-Score)
+│   └── evaluate.py     # Metrics (Accuracy, Confusion Matrix, F1-Score, etc.)
 ├── reports/            # Visualizations, Loss curves, and logs
 │   └── figures/
 ├── requirements.txt    # Library dependencies (torch, torchvision, pandas, etc.)
