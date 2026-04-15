@@ -9,7 +9,6 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from tqdm import tqdm
-from data import train_dataloader, val_dataloader
 
 
 # --- Prerequisites ---
@@ -21,13 +20,13 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Training function
 def train_model(model, train_dataloader, val_dataloader, model_name, epochs=10):
-  print(f"\n Training {model_name}.upper()...")
+  print(f"\n Training {model_name}...")
 
   model = model.to(device)
 
   criterion = nn.CrossEntropyLoss()
   optimizer = optim.Adam(
-      filter(lambda p: p.requires_grad, model.parameters()),
+      filter(lambda p: p.requires_grad, model.parameters()),  # Only train parameters that require gradients
       lr=0.001
   )
 
@@ -92,13 +91,13 @@ def train_model(model, train_dataloader, val_dataloader, model_name, epochs=10):
       torch.save(model.state_dict(), f"models/{model_name}.pth")
       print("Model Saved.")
 
-      trigger_times = 0
+      trigger_time = 0
 
     else:
-      trigger_times += 1
-      print(f"No improvement ({trigger_times}/{patience})")
+      trigger_time += 1
+      print(f"No improvement ({trigger_time}/{patience})")
 
-      if trigger_times >= patience:
+      if trigger_time >= patience:
         print("Early stopping triggered.")
         break
 

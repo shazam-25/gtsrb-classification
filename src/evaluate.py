@@ -1,44 +1,37 @@
-# --------- BEGIN ---------------
-# evaluate.py
-# -- Evaluation Loop for the model
-# -------------------------------
-
-# Import libraries
 import os
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from src.modelLoader import load_model, get_predictions
+# from src.modelArchitecture import get_model, device # Import device too
 
-# -- Prerequisites --
-
-# Make directory to save the reports
-os.makedirs("reports/figures", exist_ok=True)
-
-# Calculate Accuracy Score
+# -------------
+# Accuracy
+# -------------
 def calculate_accuracy(y_true, y_pred, filename):
   acc_score = accuracy_score(y_true, y_pred)
   with open(filename, "w") as f:
     f.write(f"Accuracy: {acc_score * 100:.3f}%\n")
-  print(f"Accuracy: {acc_score * 100:.3f}%")
+  print(f"Accuracy: {acc_score}")
 
-
-# Plot Confusion Matrix
+# -----------------
+# Confusion Matrix
+# -----------------
 def plot_confusion_matrix(y_true, y_pred, filename):
   cm = confusion_matrix(y_true, y_pred)
-  plt.figure(figsize=(20, 15))
-  sns.heatmap(cm, cmap="YlGnRe")
+  plt.figure(figsize=(15, 8))
+  sns.heatmap(cm, cmap="YlGnBu")
   plt.title("Confusion Matrix")
   plt.xlabel("Predicted Traffic Sign (Class ID)")
   plt.ylabel("Actual Traffic Sign (Class ID)")
   plt.show()
-
   plt.savefig(filename)
-  # print(f"Confusion Matrix saved.")
   plt.close()
 
-
+# ----------------------------
 # Plot Misclassified Samples
+# ----------------------------
 def plot_misclassified_samples(misclassified, filename, num=10):
   num = min(num, len(misclassified))
   plt.figure(figsize=(15,5))
@@ -50,8 +43,11 @@ def plot_misclassified_samples(misclassified, filename, num=10):
     plt.subplot(2, 5, i+1)
     img, true, pred = misclassified[i]
 
+    if img.shape[0] == 1:
+        img = np.repeat(img, 3, axis=0)
+
     img = denormalize(img)
-    img = img.transpose(1, 2, 0)
+    img = np.transpose(img, (1, 2, 0))
 
     plt.imshow(img)
     plt.title(f"True: {true}, Pred: {pred}")
@@ -59,56 +55,45 @@ def plot_misclassified_samples(misclassified, filename, num=10):
 
   plt.suptitle(f"Misclassified Samples")
   plt.show()
-
   plt.savefig(filename)
   plt.close()
-  # print("Misclassified samples plot saved.")
- 
 
-# Print Classification Report
+# ----------------------
+# Classification Report
+# ----------------------
 def print_classification_report(y_true, y_pred, filename):
-  # print(classification_report(y_true, y_pred))
   with open(filename, "w") as f:
     f.write(classification_report(y_true, y_pred))
 
-
+# ---------------------------
 # Find Most Confused Classes
+# ---------------------------
 def find_most_confused_classes(y_true, y_pred):
   cm = confusion_matrix(y_true, y_pred)
-
-  # Ignore diagonal
   np.fill_diagonal(cm, 0)
-
-  # Find top confusion pairs
-  pairs = np.dstack(np.unravel_index(np.argsort(cm.ravel())[::-1], cm.shape))[0]
+  sorted_indices = np.argsort(cm.ravel())[::-1]
+  rows, cols = np.unravel_index(sorted_indices, cm.shape)
+  pairs = list(zip(rows, cols))
 
   print("Most Confused Class Pairs:")
-  for i in range(5):
+  for i in range(min(5, len(pairs))):
     a, b = pairs[i]
-    print(f"Class {a} → Class {b} ({cm[a][b]} times)")
+    if cm[a][b] > 0:
+      print(f"Class {a} -> Class {b} ({cm[a][b]} times)")
 
 
-# Main evaluation function
-def evaluate_model(model_name):
-  print(f"--- Evalaution Report of {model_name} ---")
-
+# Run Evaluation Function
+def evaluate_model(model_name, dataloader):
+  os.makedirs("reports/figures", exist_ok=True)
+  print(f"--- Evaluation Report of {model_name} ---")
   print(f"Model Name: {model_name}")
 
-  model = load_trained_model(model_name)
-  preds, labels, misclassified = get_predictions(model, test_dataloader)
+  model = load_model(model_name)
+  preds, labels, misclassified = get_predictions(model, dataloader)
 
-  # Accuracy Score
   calculate_accuracy(labels, preds, filename=f"reports/{model_name}_accuracy.txt")
-
-  # Confusion Matrix
   plot_confusion_matrix(labels, preds, filename=f"reports/figures/{model_name}_cm.png")
-
-  # Classification Report --> Saved
   print_classification_report(labels, preds, filename=f"reports/{model_name}_classification_report.txt")
-
-  # Misclassified Samples
   plot_misclassified_samples(misclassified, filename=f"reports/figures/{model_name}_misclassified.png", num=10)
-
-  # Most Confused Classes
   find_most_confused_classes(labels, preds)
   print(f"Finished Evaluation for {model_name}.\n")

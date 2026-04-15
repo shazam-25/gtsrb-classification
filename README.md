@@ -58,6 +58,54 @@ The workflow follows a modular approach to ensure scalability and reproducibilit
 
 ---
 
+# 🚗 🔄 2. Operation Flowchart
+
+
+## 🔄 Operation Flow
+<!-- ```markdown -->
+```mermaid
+flowchart TD
+    Start([Start]) --> LoadData[Load Dataset]
+    LoadData --> Preprocess[Preprocess Images]
+    Preprocess --> Split[Train / Validation Split]
+
+    Split --> TrainCNN[Train CNN]
+    Split --> TrainResNet[Train ResNet50]
+    Split --> TrainMobile[Train MobileNetV2]
+
+    TrainCNN --> SaveModels[Save Best Models]
+    TrainResNet --> SaveModels
+    TrainMobile --> SaveModels
+
+    SaveModels --> Evaluate[Evaluate on Test Data]
+    Evaluate --> Metrics[Accuracy, Confusion Matrix, Report]
+
+    Metrics --> Dashboard[Interactive Dashboard]
+    Dashboard --> End([End])
+```
+---
+
+<!-- ```markdown -->
+## 🏗️ System Architecture
+
+```mermaid
+graph LR
+    A[Raw Data] --> B[Preprocessing]
+    B --> C[Dataset & DataLoader]
+    C --> D[Model Training]
+
+    D --> E[CNN]
+    D --> F[ResNet50]
+    D --> G[MobileNetV2]
+
+    E --> H[Evaluation]
+    F --> H
+    G --> H
+
+    H --> I[Reports]
+```
+---
+
 ## 🚀Getting Started
 
 ### Prerequisites
