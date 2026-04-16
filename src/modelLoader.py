@@ -1,11 +1,11 @@
 import torch
 import numpy as np
 from tqdm import tqdm
+
 from src.modelArchitecture import get_model, device # Import device and get_model
 
 # Load Trained Model
 def load_model(model_name):
-  # Get model architecture and load the trained weights
   model = get_model(model_name)
   model.load_state_dict(torch.load(f"models/{model_name}.pth", map_location=device))
   model.eval()

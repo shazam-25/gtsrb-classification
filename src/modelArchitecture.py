@@ -58,15 +58,15 @@ class ResNet50(nn.Module):
 
     # Freeze all parameters in the network
     for param in self.model.parameters():
-      param.requires_grad = False
+      param.requires_grad = True
 
     # Replace the final fully connected layer
     # The input features to the fc layer are `self.model.fc.in_features`
     self.model.fc = nn.Linear(self.model.fc.in_features, num_classes)
     
     # Ensure the newly added layer's parameters are trainable
-    for param in self.model.fc.parameters():
-        param.requires_grad = True
+    # for param in self.model.fc.parameters():
+    #     param.requires_grad = True
 
   def forward(self, x):
     return self.model(x)
@@ -80,7 +80,7 @@ class MobileNetV2(nn.Module):
 
     # Freeze all parameters in the network
     for param in self.model.parameters():
-      param.requires_grad = False
+      param.requires_grad = True
 
     # Replace the final classifier layer
     # MobileNetV2's classifier is a Sequential layer, where the last layer is Linear
@@ -88,8 +88,8 @@ class MobileNetV2(nn.Module):
     self.model.classifier[-1] = nn.Linear(in_features, num_classes)
 
     # Ensure the newly added layer's parameters are trainable
-    for param in self.model.classifier[-1].parameters():
-        param.requires_grad = True
+    # for param in self.model.classifier[-1].parameters():
+    #     param.requires_grad = True
 
   def forward(self, x):
     return self.model(x)

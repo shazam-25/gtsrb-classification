@@ -3,8 +3,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from tqdm import tqdm
+
 from src.modelLoader import load_model, get_predictions
-# from src.modelArchitecture import get_model, device # Import device too
+from src.modelArchitecture import get_model, device # Import device too
 
 # -------------
 # Accuracy
@@ -20,7 +22,7 @@ def calculate_accuracy(y_true, y_pred, filename):
 # -----------------
 def plot_confusion_matrix(y_true, y_pred, filename):
   cm = confusion_matrix(y_true, y_pred)
-  plt.figure(figsize=(15, 8))
+  plt.figure(figsize=(8, 8))
   sns.heatmap(cm, cmap="YlGnBu")
   plt.title("Confusion Matrix")
   plt.xlabel("Predicted Traffic Sign (Class ID)")
@@ -83,13 +85,13 @@ def find_most_confused_classes(y_true, y_pred):
 
 
 # Run Evaluation Function
-def evaluate_model(model_name, dataloader):
+def evaluate_model(model_name, test_dataloader):
   os.makedirs("reports/figures", exist_ok=True)
   print(f"--- Evaluation Report of {model_name} ---")
   print(f"Model Name: {model_name}")
 
   model = load_model(model_name)
-  preds, labels, misclassified = get_predictions(model, dataloader)
+  preds, labels, misclassified = get_predictions(model, test_dataloader)
 
   calculate_accuracy(labels, preds, filename=f"reports/{model_name}_accuracy.txt")
   plot_confusion_matrix(labels, preds, filename=f"reports/figures/{model_name}_cm.png")
