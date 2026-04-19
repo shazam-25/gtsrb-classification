@@ -58,9 +58,6 @@ The workflow follows a modular approach to ensure scalability and reproducibilit
 
 ---
 
-# 🚗 🔄 2. Operation Flowchart
-
-
 ## 🔄 Operation Flow
 <!-- ```markdown -->
 ```mermaid
