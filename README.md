@@ -80,8 +80,7 @@ flowchart TD
     SaveModels --> Evaluate[Evaluate on Test Data]
     Evaluate --> Metrics[Accuracy, Confusion Matrix, Report]
 
-    Metrics --> Dashboard[Interactive Dashboard]
-    Dashboard --> End([End])
+    Metrics --> End([End])
 ```
 ---
 
